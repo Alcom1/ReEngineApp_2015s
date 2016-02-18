@@ -26,19 +26,25 @@ for better functionality.
 
 #include "OpenGL-Tutorials\shader.hpp"
 
-//System Class
+//System Class. Contains all verticies for objects that will be rendered.
 class MyMesh
 {
 protected:
 	bool m_bBinded = false; //Binded flag
 	int m_nVertexCount = 0; //Number of Vertices in this Mesh
 
+	//What is a buffer in terms of OpenGL?
+	//I wanna bind this buffer!
+	//Whenever you allocate a pointer, you reserve a space in memory
+	//A buffer reserves a space in memory in the GPU
+	//In order to access the GPU memory, we need some sort of pointer
 	GLuint m_vao = 0;			//OpenGL Vertex Array Object
 	GLuint m_VertexBuffer = 0;	//OpenGL Buffer (Will hold the vertex buffer pointer)
 	GLuint m_ColorBuffer = 0;	//OpenGL Buffer (Will hold the color buffer pointer)
 
+	//Shaders are small programs that run on the GPU
 	GLuint m_nShaderProgram = 0;
-
+	
 	std::vector<glm::vec3> m_lVertexPos;	//List of Vertices
 	std::vector<glm::vec3> m_lVertexCol;	//List of Colors
 
