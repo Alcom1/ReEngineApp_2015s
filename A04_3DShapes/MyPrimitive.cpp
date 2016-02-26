@@ -334,6 +334,34 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a
 		}
 	}
 
+	/*
+	AddQuad(
+		*radialPoints[0],
+		*radialPoints[1],
+		*radialPoints[0 + a_nSubdivisions],
+		*radialPoints[1 + a_nSubdivisions]);
+	*/
+
+	for (int j = 0; j < a_nSubdivisions - 3; j++)
+	{
+		for (int i = 0; i < a_nSubdivisions; i++)
+		{
+			AddQuad(
+				*radialPoints[
+					i % a_nSubdivisions +
+					j * a_nSubdivisions],
+				*radialPoints[
+					(i + 1) % a_nSubdivisions +
+					j * a_nSubdivisions],
+				*radialPoints[
+					i % a_nSubdivisions +
+					(j + 1) * a_nSubdivisions],
+				*radialPoints[
+					(i + 1) % a_nSubdivisions +
+					(j + 1) * a_nSubdivisions]);
+		}
+	}
+
 
 	for (int i = 0; i < a_nSubdivisions; i++)					//Add bot tris
 	{
