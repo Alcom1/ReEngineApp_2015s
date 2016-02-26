@@ -315,45 +315,41 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a
 	Init();
 
 	//Your code starts here
-	vector3 centerBot(0, -a_fRadius, 0);					//Center bottom point
-	vector3 centerTop(0, a_fRadius, 0);						//Center top point, the peak
-	vector3** radialPoints = new vector3*[a_nSubdivisions];		//Points around the radius
+	vector3 centerBot(0, -a_fRadius, 0);												//Center bottom point
+	vector3 centerTop(0, a_fRadius, 0);													//Center top point, the peak
+	vector3** radialPoints = new vector3*[a_nSubdivisions * (a_nSubdivisions - 2)];		//Points around the radius
 
 	for (int j = 1; j < a_nSubdivisions - 1; j++)
 	{
 		float yClimb = 2 * (float)j / (a_nSubdivisions - 1) - 1;
 		float subRadius = sqrt(1 - yClimb * yClimb);
-		std::cout << yClimb * a_fRadius << std::endl;
 		float angle = 0;											//Angle tracker
 		for (int i = 0; i < a_nSubdivisions; i++)					//Generate radial points
 		{
-			radialPoints[i] = new vector3(
+			radialPoints[i + (j - 1) * a_nSubdivisions] = new vector3(
 				sin(angle) * a_fRadius,
 				yClimb * a_fRadius,
 				cos(angle) * a_fRadius);
 			angle += PI * 2 / a_nSubdivisions;
 		}
-		if (j == 1)
-		{
-			for (int i = 0; i < a_nSubdivisions; i++)					//Add bot tris
-			{
-				AddTri(
-					centerBot,
-					*radialPoints[(i + 1) % a_nSubdivisions],
-					*radialPoints[i % a_nSubdivisions]);
-			}
-		}
-		if (j == a_nSubdivisions - 2)
-		{
-			for (int i = 0; i < a_nSubdivisions; i++)					//Add top tris
-			{
+	}
 
-				AddTri(
-					*radialPoints[i % a_nSubdivisions],
-					*radialPoints[(i + 1) % a_nSubdivisions],
-					centerTop);
-			}
-		}
+
+	for (int i = 0; i < a_nSubdivisions; i++)					//Add bot tris
+	{
+		AddTri(
+			centerBot,
+			*radialPoints[(i + 1) % a_nSubdivisions],
+			*radialPoints[i % a_nSubdivisions]);
+	}
+
+	for (int i = 0; i < a_nSubdivisions; i++)					//Add top tris
+	{
+
+		AddTri(
+			*radialPoints[(i % a_nSubdivisions) + a_nSubdivisions * (a_nSubdivisions - 3)],
+			*radialPoints[((i + 1) % a_nSubdivisions) + a_nSubdivisions * (a_nSubdivisions - 3)],
+			centerTop);
 	}
 
 	delete[] radialPoints;	//Memory management, yo!
