@@ -309,7 +309,7 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a
 		return;
 	}
 	if (a_nSubdivisions > 20)
-		a_nSubdivisions = 6;
+		a_nSubdivisions = 20;
 
 	Release();
 	Init();
@@ -317,32 +317,30 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a
 	//Your code starts here
 	vector3 centerBot(0, -a_fRadius, 0);												//Center bottom point
 	vector3 centerTop(0, a_fRadius, 0);													//Center top point, the peak
-	vector3** radialPoints = new vector3*[a_nSubdivisions * (a_nSubdivisions - 2)];		//Points around the radius
+	vector3** radialPoints = new vector3*[a_nSubdivisions * (a_nSubdivisions - 1)];		//Array of points for all rings
+	float angleVert = PI / a_nSubdivisions;												//Vertical angle tracker
 
-	for (int j = 1; j < a_nSubdivisions - 1; j++)
+	//For each ring
+	for (int j = 1; j < a_nSubdivisions; j++)
 	{
-		float yClimb = 2 * (float)j / (a_nSubdivisions - 1) - 1;
-		float subRadius = sqrt(1 - yClimb * yClimb);
-		float angle = 0;											//Angle tracker
-		for (int i = 0; i < a_nSubdivisions; i++)					//Generate radial points
+		float yClimb = -cos(angleVert);									//Normalized Y position of the current ring
+		float subRadius = sqrt(1 - yClimb * yClimb);					//Normalized radius of the current ring
+		float angleHorz = 0;											//Horizontal angle tracker
+		
+		//For each point in a ring
+		for (int i = 0; i < a_nSubdivisions; i++)
 		{
-			radialPoints[i + (j - 1) * a_nSubdivisions] = new vector3(
-				sin(angle) * a_fRadius,
+			radialPoints[i + (j - 1) * a_nSubdivisions] = new vector3(	//Generate the point in the array
+				sin(angleHorz) * a_fRadius * subRadius,
 				yClimb * a_fRadius,
-				cos(angle) * a_fRadius);
-			angle += PI * 2 / a_nSubdivisions;
+				cos(angleHorz) * a_fRadius * subRadius);
+			angleHorz += PI * 2 / a_nSubdivisions;
 		}
+		angleVert += PI / a_nSubdivisions;
 	}
 
-	/*
-	AddQuad(
-		*radialPoints[0],
-		*radialPoints[1],
-		*radialPoints[0 + a_nSubdivisions],
-		*radialPoints[1 + a_nSubdivisions]);
-	*/
-
-	for (int j = 0; j < a_nSubdivisions - 3; j++)
+	//Add side quads
+	for (int j = 0; j < a_nSubdivisions - 2; j++)
 	{
 		for (int i = 0; i < a_nSubdivisions; i++)
 		{
@@ -362,8 +360,8 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a
 		}
 	}
 
-
-	for (int i = 0; i < a_nSubdivisions; i++)					//Add bot tris
+	//Add bot tris
+	for (int i = 0; i < a_nSubdivisions; i++)
 	{
 		AddTri(
 			centerBot,
@@ -371,12 +369,13 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a
 			*radialPoints[i % a_nSubdivisions]);
 	}
 
-	for (int i = 0; i < a_nSubdivisions; i++)					//Add top tris
+	//Add top tris
+	for (int i = 0; i < a_nSubdivisions; i++)
 	{
 
 		AddTri(
-			*radialPoints[(i % a_nSubdivisions) + a_nSubdivisions * (a_nSubdivisions - 3)],
-			*radialPoints[((i + 1) % a_nSubdivisions) + a_nSubdivisions * (a_nSubdivisions - 3)],
+			*radialPoints[(i % a_nSubdivisions) + a_nSubdivisions * (a_nSubdivisions - 2)],
+			*radialPoints[((i + 1) % a_nSubdivisions) + a_nSubdivisions * (a_nSubdivisions - 2)],
 			centerTop);
 	}
 
