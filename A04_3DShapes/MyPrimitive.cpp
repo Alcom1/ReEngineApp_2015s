@@ -134,11 +134,11 @@ void MyPrimitive::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivis
 	}
 	for (int i = 0; i < a_nSubdivisions; i++)					//Add tris
 	{
-		AddTri(	//Flat tris
+		AddTri(													//Flat tris
 			centerBot,
 			*radialPoints[(i + 1) % a_nSubdivisions],
 			*radialPoints[i % a_nSubdivisions]);
-		AddTri(	//Peak tris
+		AddTri(													//Peak tris
 			*radialPoints[i % a_nSubdivisions],
 			*radialPoints[(i + 1) % a_nSubdivisions],
 			centerTop);
@@ -161,8 +161,8 @@ void MyPrimitive::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubd
 	//Your code starts here
 	vector3 centerBot(0, -a_fHeight / 2, 0);					//Center bottom point
 	vector3 centerTop(0, a_fHeight / 2, 0);						//Center top point, the peak
-	vector3** radialPointsBot = new vector3*[a_nSubdivisions];  //Points around the 
-	vector3** radialPointsTop = new vector3*[a_nSubdivisions];  //Points around the radius
+	vector3** radialPointsBot = new vector3*[a_nSubdivisions];  //Lower points around the radius
+	vector3** radialPointsTop = new vector3*[a_nSubdivisions];  //Upper points around the radius
 	
 	float angle = 0;											//Angle tracker
 	for (int i = 0; i < a_nSubdivisions; i++)					//Generate radial points
@@ -179,15 +179,15 @@ void MyPrimitive::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubd
 	}
 	for (int i = 0; i < a_nSubdivisions; i++)					//Add tris and quads
 	{
-		AddTri(	//Flat tris
+		AddTri(													//Bottom tris
 			centerBot,
 			*radialPointsBot[(i + 1) % a_nSubdivisions],
 			*radialPointsBot[i % a_nSubdivisions]);
-		AddTri(	//Peak tris
+		AddTri(													//Top tris
 			*radialPointsTop[i % a_nSubdivisions],
 			*radialPointsTop[(i + 1) % a_nSubdivisions],
 			centerTop);
-		AddQuad(
+		AddQuad(												//Curcumfrense or however you spell it
 			*radialPointsBot[i % a_nSubdivisions],
 			*radialPointsBot[(i + 1) % a_nSubdivisions],
 			*radialPointsTop[i % a_nSubdivisions],
@@ -210,17 +210,60 @@ void MyPrimitive::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	vector3** radialPointsBotOuter = new vector3*[a_nSubdivisions];  //Outer Lower Radial Points
+	vector3** radialPointsTopOuter = new vector3*[a_nSubdivisions];  //Outer Upper Radial Points
+	vector3** radialPointsBotInner = new vector3*[a_nSubdivisions];  //Inner Lower Radial Points
+	vector3** radialPointsTopInner = new vector3*[a_nSubdivisions];  //Inner Upper Radial Points
 
-	AddQuad(point0, point1, point3, point2);
+	float angle = 0;											//Angle tracker
+	for (int i = 0; i < a_nSubdivisions; i++)					//Generate radial points
+	{
+		radialPointsBotOuter[i] = new vector3(
+			sin(angle) * a_fOuterRadius,
+			-a_fHeight / 2,
+			cos(angle) * a_fOuterRadius);
+		radialPointsTopOuter[i] = new vector3(
+			sin(angle) * a_fOuterRadius,
+			a_fHeight / 2,
+			cos(angle) * a_fOuterRadius);
+		radialPointsBotInner[i] = new vector3(
+			sin(angle) * a_fInnerRadius,
+			-a_fHeight / 2,
+			cos(angle) * a_fInnerRadius);
+		radialPointsTopInner[i] = new vector3(
+			sin(angle) * a_fInnerRadius,
+			a_fHeight / 2,
+			cos(angle) * a_fInnerRadius);
+		angle += PI * 2 / a_nSubdivisions;
+	}
+	for (int i = 0; i < a_nSubdivisions; i++)					//Add tris and quads
+	{
+		AddQuad(												//Outer
+			*radialPointsBotOuter[i % a_nSubdivisions],
+			*radialPointsBotOuter[(i + 1) % a_nSubdivisions],
+			*radialPointsTopOuter[i % a_nSubdivisions],
+			*radialPointsTopOuter[(i + 1) % a_nSubdivisions]);
+		AddQuad(												//Inner
+			*radialPointsTopInner[(i + 1) % a_nSubdivisions],
+			*radialPointsBotInner[(i + 1) % a_nSubdivisions],
+			*radialPointsTopInner[i % a_nSubdivisions],
+			*radialPointsBotInner[i % a_nSubdivisions]);
+		AddQuad(												//Top
+			*radialPointsTopInner[(i + 1) % a_nSubdivisions],
+			*radialPointsTopInner[i % a_nSubdivisions],
+			*radialPointsTopOuter[(i + 1) % a_nSubdivisions],
+			*radialPointsTopOuter[i % a_nSubdivisions]);
+		AddQuad(												//Bottom
+			*radialPointsBotInner[(i + 1) % a_nSubdivisions],
+			*radialPointsBotOuter[(i + 1) % a_nSubdivisions],
+			*radialPointsBotInner[i % a_nSubdivisions],
+			*radialPointsBotOuter[i % a_nSubdivisions]);
+	}
 
+	delete[] radialPointsBotOuter;	//Memory management, yo!
+	delete[] radialPointsTopOuter;
+	delete[] radialPointsBotInner;
+	delete[] radialPointsTopInner;
 	//Your code ends here
 	CompileObject(a_v3Color);
 }
@@ -272,17 +315,43 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	vector3 centerBot(0, -a_fRadius / 2, 0);					//Center bottom point
+	vector3 centerTop(0, a_fRadius / 2, 0);						//Center top point, the peak
+	vector3** radialPointsBot = new vector3*[a_nSubdivisions];  //Lower points around the radius
+	vector3** radialPointsTop = new vector3*[a_nSubdivisions];  //Upper points around the radius
 
-	AddQuad(point0, point1, point3, point2);
+	float angle = 0;											//Angle tracker
+	for (int i = 0; i < a_nSubdivisions; i++)					//Generate radial points
+	{
+		radialPointsBot[i] = new vector3(
+			sin(angle) * a_fRadius,
+			-a_fRadius / 2,
+			cos(angle) * a_fRadius);
+		radialPointsTop[i] = new vector3(
+			sin(angle) * a_fRadius,
+			a_fRadius / 2,
+			cos(angle) * a_fRadius);
+		angle += PI * 2 / a_nSubdivisions;
+	}
+	for (int i = 0; i < a_nSubdivisions; i++)					//Add tris and quads
+	{
+		AddTri(													//Bottom tris
+			centerBot,
+			*radialPointsBot[(i + 1) % a_nSubdivisions],
+			*radialPointsBot[i % a_nSubdivisions]);
+		AddTri(													//Top tris
+			*radialPointsTop[i % a_nSubdivisions],
+			*radialPointsTop[(i + 1) % a_nSubdivisions],
+			centerTop);
+		AddQuad(												//Curcumfrense or however you spell it
+			*radialPointsBot[i % a_nSubdivisions],
+			*radialPointsBot[(i + 1) % a_nSubdivisions],
+			*radialPointsTop[i % a_nSubdivisions],
+			*radialPointsTop[(i + 1) % a_nSubdivisions]);
+	}
 
+	delete[] radialPointsBot;	//Memory management, yo!
+	delete[] radialPointsTop;
 	//Your code ends here
 	CompileObject(a_v3Color);
 }
