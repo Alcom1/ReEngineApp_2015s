@@ -8,11 +8,11 @@ void AppClass::InitVariables(void)
 {
 	//Reserve Memory for a MyMeshClass object
 	m_pPrimitive = new MyPrimitive();
-	//m_pPrimitive->GenerateCube(1.0f, REWHITE);
-	//m_pPrimitive->GenerateCone(1.0f, 1.0f, 12, REGREEN);
+	m_pPrimitive->GenerateCube(1.0f, REWHITE);
+	m_pPrimitive->GenerateCone(1.0f, 1.0f, 12, REGREEN);
 	m_pPrimitive->GenerateCylinder(1.0f, 2.0f, 7, REBLUE);
-	//m_pPrimitive->GenerateTube(1.0f, 0.7f, 2.0f, 7, REYELLOW);
-	//m_pPrimitive->GenerateSphere(1.0f, 3, RERED);
+	m_pPrimitive->GenerateTube(1.0f, 0.7f, 2.0f, 7, REYELLOW);
+    m_pPrimitive->GenerateSphere(1.0f, 3, RERED);
 }
 
 void AppClass::Update(void)

@@ -119,14 +119,17 @@ void MyPrimitive::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivis
 	Init();
 
 	//Your code starts here
-	vector3 centerBot(0, 0, 0);									//Center bottom point
-	vector3 centerTop(0, a_fHeight, 0);							//Center top point, the peak
+	vector3 centerBot(0, -a_fHeight / 2, 0);					//Center bottom point
+	vector3 centerTop(0, a_fHeight / 2, 0);						//Center top point, the peak
 	vector3** radialPoints = new vector3*[a_nSubdivisions];		//Points around the radius
 	
 	float angle = 0;											//Angle tracker
 	for (int i = 0; i < a_nSubdivisions; i++)					//Generate radial points
 	{
-		radialPoints[i] = new vector3(sin(angle) * a_fRadius, 0, cos(angle) * a_fRadius);
+		radialPoints[i] = new vector3(
+			sin(angle) * a_fRadius,
+			-a_fHeight / 2,
+			cos(angle) * a_fRadius);
 		angle += PI * 2 / a_nSubdivisions;
 	}
 	for (int i = 0; i < a_nSubdivisions; i++)					//Add tris
@@ -156,16 +159,22 @@ void MyPrimitive::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubd
 	Init();
 
 	//Your code starts here
-	vector3 centerBot(0, 0, 0);									//Center bottom point
-	vector3 centerTop(0, a_fHeight, 0);							//Center top point, the peak
+	vector3 centerBot(0, -a_fHeight / 2, 0);					//Center bottom point
+	vector3 centerTop(0, a_fHeight / 2, 0);						//Center top point, the peak
 	vector3** radialPointsBot = new vector3*[a_nSubdivisions];  //Points around the 
 	vector3** radialPointsTop = new vector3*[a_nSubdivisions];  //Points around the radius
 	
 	float angle = 0;											//Angle tracker
 	for (int i = 0; i < a_nSubdivisions; i++)					//Generate radial points
 	{
-		radialPointsBot[i] = new vector3(sin(angle) * a_fRadius, 0, cos(angle) * a_fRadius);
-		radialPointsTop[i] = new vector3(sin(angle) * a_fRadius, a_fHeight, cos(angle) * a_fRadius);
+		radialPointsBot[i] = new vector3(
+			sin(angle) * a_fRadius,
+			-a_fHeight / 2,
+			cos(angle) * a_fRadius);
+		radialPointsTop[i] = new vector3(
+			sin(angle) * a_fRadius,
+			a_fHeight / 2,
+			cos(angle) * a_fRadius);
 		angle += PI * 2 / a_nSubdivisions;
 	}
 	for (int i = 0; i < a_nSubdivisions; i++)					//Add tris and quads
