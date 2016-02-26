@@ -107,6 +107,8 @@ private:
 	OUTPUT: ---
 	*/
 	void AddQuad(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTopLeft, vector3 a_vTopRight);
+	//Adds a tri
+	void AddTri(vector3 a, vector3 b, vector3 c);
 };
 
 #endif //__MYPRIMITIVE_H_

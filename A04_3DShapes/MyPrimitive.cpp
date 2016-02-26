@@ -30,6 +30,15 @@ void MyPrimitive::AddQuad(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3
 	AddVertexPosition(a_vBottomRight);
 	AddVertexPosition(a_vTopRight);
 }
+
+//This will make the triang A->B->C
+void MyPrimitive::AddTri(vector3 a, vector3 b, vector3 c)
+{
+	AddVertexPosition(a);
+	AddVertexPosition(b);
+	AddVertexPosition(c);
+}
+
 void MyPrimitive::GeneratePlane(float a_fSize, vector3 a_v3Color)
 {
 	if (a_fSize < 0.01f)
@@ -110,17 +119,29 @@ void MyPrimitive::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivis
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
-
-	AddQuad(point0, point1, point3, point2);
-
+	vector3 centerBot(0, 0, 0);									//Center bottom point
+	vector3 centerTop(0, a_fHeight, 0);							//Center top point, the peak
+	vector3** radialPoints = new vector3*[a_nSubdivisions];		//Points around the radius
+	
+	float angle = 0;											//Angle tracker
+	for (int i = 0; i < a_nSubdivisions; i++)					//Generate radial points
+	{
+		radialPoints[i] = new vector3(sin(angle) * a_fRadius, 0, cos(angle) * a_fRadius);
+		angle += PI * 2 / a_nSubdivisions;
+	}
+	for (int i = 0; i < a_nSubdivisions; i++)					//Add tris
+	{
+		AddTri(	//Flat tris
+			centerBot,
+			*radialPoints[(i + 1) % a_nSubdivisions],
+			*radialPoints[i % a_nSubdivisions]);
+		AddTri(	//Peak tris
+			*radialPoints[i % a_nSubdivisions],
+			*radialPoints[(i + 1) % a_nSubdivisions],
+			centerTop);
+	}
+	
+	delete[] radialPoints;	//Memory management, yo!
 	//Your code ends here
 	CompileObject(a_v3Color);
 }
@@ -135,17 +156,37 @@ void MyPrimitive::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubd
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
-
-	AddQuad(point0, point1, point3, point2);
-
+	vector3 centerBot(0, 0, 0);									//Center bottom point
+	vector3 centerTop(0, a_fHeight, 0);							//Center top point, the peak
+	vector3** radialPointsBot = new vector3*[a_nSubdivisions];  //Points around the 
+	vector3** radialPointsTop = new vector3*[a_nSubdivisions];  //Points around the radius
+	
+	float angle = 0;											//Angle tracker
+	for (int i = 0; i < a_nSubdivisions; i++)					//Generate radial points
+	{
+		radialPointsBot[i] = new vector3(sin(angle) * a_fRadius, 0, cos(angle) * a_fRadius);
+		radialPointsTop[i] = new vector3(sin(angle) * a_fRadius, a_fHeight, cos(angle) * a_fRadius);
+		angle += PI * 2 / a_nSubdivisions;
+	}
+	for (int i = 0; i < a_nSubdivisions; i++)					//Add tris and quads
+	{
+		AddTri(	//Flat tris
+			centerBot,
+			*radialPointsBot[(i + 1) % a_nSubdivisions],
+			*radialPointsBot[i % a_nSubdivisions]);
+		AddTri(	//Peak tris
+			*radialPointsTop[i % a_nSubdivisions],
+			*radialPointsTop[(i + 1) % a_nSubdivisions],
+			centerTop);
+		AddQuad(
+			*radialPointsBot[i % a_nSubdivisions],
+			*radialPointsBot[(i + 1) % a_nSubdivisions],
+			*radialPointsTop[i % a_nSubdivisions],
+			*radialPointsTop[(i + 1) % a_nSubdivisions]);
+	}
+	
+	delete[] radialPointsBot;	//Memory management, yo!
+	delete[] radialPointsTop;
 	//Your code ends here
 	CompileObject(a_v3Color);
 }
