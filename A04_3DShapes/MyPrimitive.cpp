@@ -291,17 +291,54 @@ void MyPrimitive::GenerateTorus(float a_fOuterRadius, float a_fInnerRadius, int 
 	Init();
 
 	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	float radiusR = a_fOuterRadius + a_fInnerRadius / 2;				//Radius around the ring.
+	float radiusL = a_fOuterRadius - a_fInnerRadius / 2;				//Radius of the segment.
+	vector3* points = new vector3[a_nSubdivisionsB * a_nSubdivisionsA];	//Points, unlike the points I will be reward for this extra credit thingy.
+	float angleB = 0;													//Angle around the ring.
 
-	AddQuad(point0, point1, point3, point2);
+	//For each segment of the ring.
+	for (int j = 0; j < a_nSubdivisionsA; j++)
+	{
+		vector2 center = vector2(radiusR * sin(angleB), radiusR * cos(angleB)); //Center of the segment.
+		float angleA = 0;														//Angle around the segment.
 
+		//For each point of the segment.
+		for (int i = 0; i < a_nSubdivisionsB; i++)
+		{
+			points[i + j * a_nSubdivisionsB] = vector3(	//Generate the point in the array
+				center.x + radiusL * cos(angleA) * sin(angleB),
+				sin(angleA) * radiusL,
+				center.y + radiusL * cos(angleA) * cos(angleB));
+			angleA += PI * 2 / a_nSubdivisionsB;		//Increment A angle for each point added.
+		}
+		angleB += PI * 2 / a_nSubdivisionsA;	//Increment B angle for each point added.
+	}
+
+	//Add quads.
+	for (int j = 0; j < a_nSubdivisionsA; j++)	//For each segment in the ring.
+	{
+		for (int i = 0; i < a_nSubdivisionsB; i++)	//For each point in the segment.
+		{
+			AddQuad(
+				points[
+					i % a_nSubdivisionsB +
+					j % a_nSubdivisionsA * a_nSubdivisionsB],
+				points[
+					(i + 1) % a_nSubdivisionsB +
+					j % a_nSubdivisionsA * a_nSubdivisionsB],
+				points[
+					i % a_nSubdivisionsB + 
+					(j + 1) % a_nSubdivisionsA * a_nSubdivisionsB],
+				points[
+					(i + 1) % a_nSubdivisionsB +
+					(j + 1) % a_nSubdivisionsA * a_nSubdivisionsB]);
+			std::cout <<
+				(i + 1) % a_nSubdivisionsB +
+				(j + 1) % a_nSubdivisionsA * a_nSubdivisionsB << std::endl;
+		}
+	}
+
+	delete[] points;	//Memory management, yo!
 	//Your code ends here
 	CompileObject(a_v3Color);
 }
