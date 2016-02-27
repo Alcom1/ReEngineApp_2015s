@@ -123,12 +123,12 @@ void MyPrimitive::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivis
 	//Your code starts here
 	vector3 centerBot(0, -a_fHeight / 2, 0);					//Center bottom point
 	vector3 centerTop(0, a_fHeight / 2, 0);						//Center top point, the peak
-	vector3** radialPoints = new vector3*[a_nSubdivisions];		//Points around the radius
+	vector3* radialPoints = new vector3[a_nSubdivisions];		//Points around the radius
 	
 	float angle = 0;											//Angle tracker
 	for (int i = 0; i < a_nSubdivisions; i++)					//Generate radial points
 	{
-		radialPoints[i] = new vector3(
+		radialPoints[i] = vector3(
 			sin(angle) * a_fRadius,
 			-a_fHeight / 2,
 			cos(angle) * a_fRadius);
@@ -138,11 +138,11 @@ void MyPrimitive::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivis
 	{
 		AddTri(													//Flat tris
 			centerBot,
-			*radialPoints[(i + 1) % a_nSubdivisions],
-			*radialPoints[i % a_nSubdivisions]);
+			radialPoints[(i + 1) % a_nSubdivisions],
+			radialPoints[i % a_nSubdivisions]);
 		AddTri(													//Peak tris
-			*radialPoints[i % a_nSubdivisions],
-			*radialPoints[(i + 1) % a_nSubdivisions],
+			radialPoints[i % a_nSubdivisions],
+			radialPoints[(i + 1) % a_nSubdivisions],
 			centerTop);
 	}
 	
@@ -164,17 +164,17 @@ void MyPrimitive::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubd
 	//Your code starts here
 	vector3 centerBot(0, -a_fHeight / 2, 0);					//Center bottom point
 	vector3 centerTop(0, a_fHeight / 2, 0);						//Center top point, the peak
-	vector3** radialPointsBot = new vector3*[a_nSubdivisions];  //Lower points around the radius
-	vector3** radialPointsTop = new vector3*[a_nSubdivisions];  //Upper points around the radius
+	vector3* radialPointsBot = new vector3[a_nSubdivisions];  //Lower points around the radius
+	vector3* radialPointsTop = new vector3[a_nSubdivisions];  //Upper points around the radius
 	
 	float angle = 0;											//Angle tracker
 	for (int i = 0; i < a_nSubdivisions; i++)					//Generate radial points
 	{
-		radialPointsBot[i] = new vector3(
+		radialPointsBot[i] = vector3(
 			sin(angle) * a_fRadius,
 			-a_fHeight / 2,
 			cos(angle) * a_fRadius);
-		radialPointsTop[i] = new vector3(
+		radialPointsTop[i] = vector3(
 			sin(angle) * a_fRadius,
 			a_fHeight / 2,
 			cos(angle) * a_fRadius);
@@ -184,17 +184,17 @@ void MyPrimitive::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubd
 	{
 		AddTri(													//Bottom tris
 			centerBot,
-			*radialPointsBot[(i + 1) % a_nSubdivisions],
-			*radialPointsBot[i % a_nSubdivisions]);
+			radialPointsBot[(i + 1) % a_nSubdivisions],
+			radialPointsBot[i % a_nSubdivisions]);
 		AddTri(													//Top tris
-			*radialPointsTop[i % a_nSubdivisions],
-			*radialPointsTop[(i + 1) % a_nSubdivisions],
+			radialPointsTop[i % a_nSubdivisions],
+			radialPointsTop[(i + 1) % a_nSubdivisions],
 			centerTop);
 		AddQuad(												//Curcumfrense or however you spell it
-			*radialPointsBot[i % a_nSubdivisions],
-			*radialPointsBot[(i + 1) % a_nSubdivisions],
-			*radialPointsTop[i % a_nSubdivisions],
-			*radialPointsTop[(i + 1) % a_nSubdivisions]);
+			radialPointsBot[i % a_nSubdivisions],
+			radialPointsBot[(i + 1) % a_nSubdivisions],
+			radialPointsTop[i % a_nSubdivisions],
+			radialPointsTop[(i + 1) % a_nSubdivisions]);
 	}
 	
 	delete[] radialPointsBot;	//Memory management, yo!
@@ -214,27 +214,27 @@ void MyPrimitive::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float
 	Init();
 
 	//Your code starts here
-	vector3** radialPointsBotOuter = new vector3*[a_nSubdivisions];  //Outer Lower Radial Points
-	vector3** radialPointsTopOuter = new vector3*[a_nSubdivisions];  //Outer Upper Radial Points
-	vector3** radialPointsBotInner = new vector3*[a_nSubdivisions];  //Inner Lower Radial Points
-	vector3** radialPointsTopInner = new vector3*[a_nSubdivisions];  //Inner Upper Radial Points
+	vector3* radialPointsBotOuter = new vector3[a_nSubdivisions];  //Outer Lower Radial Points
+	vector3* radialPointsTopOuter = new vector3[a_nSubdivisions];  //Outer Upper Radial Points
+	vector3* radialPointsBotInner = new vector3[a_nSubdivisions];  //Inner Lower Radial Points
+	vector3* radialPointsTopInner = new vector3[a_nSubdivisions];  //Inner Upper Radial Points
 
 	float angle = 0;											//Angle tracker
 	for (int i = 0; i < a_nSubdivisions; i++)					//Generate radial points
 	{
-		radialPointsBotOuter[i] = new vector3(
+		radialPointsBotOuter[i] = vector3(
 			sin(angle) * a_fOuterRadius,
 			-a_fHeight / 2,
 			cos(angle) * a_fOuterRadius);
-		radialPointsTopOuter[i] = new vector3(
+		radialPointsTopOuter[i] = vector3(
 			sin(angle) * a_fOuterRadius,
 			a_fHeight / 2,
 			cos(angle) * a_fOuterRadius);
-		radialPointsBotInner[i] = new vector3(
+		radialPointsBotInner[i] = vector3(
 			sin(angle) * a_fInnerRadius,
 			-a_fHeight / 2,
 			cos(angle) * a_fInnerRadius);
-		radialPointsTopInner[i] = new vector3(
+		radialPointsTopInner[i] = vector3(
 			sin(angle) * a_fInnerRadius,
 			a_fHeight / 2,
 			cos(angle) * a_fInnerRadius);
@@ -243,25 +243,25 @@ void MyPrimitive::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float
 	for (int i = 0; i < a_nSubdivisions; i++)					//Add tris and quads
 	{
 		AddQuad(												//Outer
-			*radialPointsBotOuter[i % a_nSubdivisions],
-			*radialPointsBotOuter[(i + 1) % a_nSubdivisions],
-			*radialPointsTopOuter[i % a_nSubdivisions],
-			*radialPointsTopOuter[(i + 1) % a_nSubdivisions]);
+			radialPointsBotOuter[i % a_nSubdivisions],
+			radialPointsBotOuter[(i + 1) % a_nSubdivisions],
+			radialPointsTopOuter[i % a_nSubdivisions],
+			radialPointsTopOuter[(i + 1) % a_nSubdivisions]);
 		AddQuad(												//Inner
-			*radialPointsTopInner[(i + 1) % a_nSubdivisions],
-			*radialPointsBotInner[(i + 1) % a_nSubdivisions],
-			*radialPointsTopInner[i % a_nSubdivisions],
-			*radialPointsBotInner[i % a_nSubdivisions]);
+			radialPointsTopInner[(i + 1) % a_nSubdivisions],
+			radialPointsBotInner[(i + 1) % a_nSubdivisions],
+			radialPointsTopInner[i % a_nSubdivisions],
+			radialPointsBotInner[i % a_nSubdivisions]);
 		AddQuad(												//Top
-			*radialPointsTopInner[(i + 1) % a_nSubdivisions],
-			*radialPointsTopInner[i % a_nSubdivisions],
-			*radialPointsTopOuter[(i + 1) % a_nSubdivisions],
-			*radialPointsTopOuter[i % a_nSubdivisions]);
+			radialPointsTopInner[(i + 1) % a_nSubdivisions],
+			radialPointsTopInner[i % a_nSubdivisions],
+			radialPointsTopOuter[(i + 1) % a_nSubdivisions],
+			radialPointsTopOuter[i % a_nSubdivisions]);
 		AddQuad(												//Bottom
-			*radialPointsBotInner[(i + 1) % a_nSubdivisions],
-			*radialPointsBotOuter[(i + 1) % a_nSubdivisions],
-			*radialPointsBotInner[i % a_nSubdivisions],
-			*radialPointsBotOuter[i % a_nSubdivisions]);
+			radialPointsBotInner[(i + 1) % a_nSubdivisions],
+			radialPointsBotOuter[(i + 1) % a_nSubdivisions],
+			radialPointsBotInner[i % a_nSubdivisions],
+			radialPointsBotOuter[i % a_nSubdivisions]);
 	}
 
 	delete[] radialPointsBotOuter;	//Memory management, yo!
@@ -323,7 +323,7 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisionsHorz, int a
 	//Your code starts here
 	vector3 centerBot(0, -a_fRadius, 0);													//Center bottom point
 	vector3 centerTop(0, a_fRadius, 0);														//Center top point, the peak
-	vector3** radialPoints = new vector3*[a_nSubdivisionsHorz * (a_nSubdivisionsVert - 1)]; //Array of points for all rings
+	vector3* radialPoints = new vector3[a_nSubdivisionsHorz * (a_nSubdivisionsVert - 1)]; //Array of points for all rings
 	float angleVert = PI / a_nSubdivisionsVert;												//Vertical angle tracker
 
 	//Generate each ring going up.
@@ -336,7 +336,7 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisionsHorz, int a
 		//Generate each point going counter-clockwise from the top.
 		for (int i = 0; i < a_nSubdivisionsHorz; i++)
 		{
-			radialPoints[i + (j - 1) * a_nSubdivisionsHorz] = new vector3(	//Generate the point in the array
+			radialPoints[i + (j - 1) * a_nSubdivisionsHorz] = vector3(	//Generate the point in the array
 				sin(angleHorz) * a_fRadius * subRadius,
 				yClimb * a_fRadius,
 				cos(angleHorz) * a_fRadius * subRadius);
@@ -346,21 +346,21 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisionsHorz, int a
 	}
 
 	//Add side quads
-	for (int j = 0; j < a_nSubdivisionsVert; j++)	//For each ring except the top one.
+	for (int j = 0; j < a_nSubdivisionsVert - 2; j++)	//For each ring except the top one.
 	{
 		for (int i = 0; i < a_nSubdivisionsHorz; i++)	//For each point in a ring, draw a quad to the top right.
 		{
 			AddQuad(
-				*radialPoints[
+				radialPoints[
 					i % a_nSubdivisionsHorz +
 					j * a_nSubdivisionsHorz],
-				*radialPoints[
+				radialPoints[
 					(i + 1) % a_nSubdivisionsHorz +
 					j * a_nSubdivisionsHorz],
-				*radialPoints[
+				radialPoints[
 					i % a_nSubdivisionsHorz +
 					(j + 1) * a_nSubdivisionsHorz],
-				*radialPoints[
+				radialPoints[
 					(i + 1) % a_nSubdivisionsHorz +
 					(j + 1) * a_nSubdivisionsHorz]);
 		}
@@ -371,8 +371,8 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisionsHorz, int a
 	{
 		AddTri(
 			centerBot,
-			*radialPoints[(i + 1) % a_nSubdivisionsHorz],
-			*radialPoints[i % a_nSubdivisionsHorz]);
+			radialPoints[(i + 1) % a_nSubdivisionsHorz],
+			radialPoints[i % a_nSubdivisionsHorz]);
 	}
 
 	//Add top tris
@@ -380,8 +380,8 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisionsHorz, int a
 	{
 
 		AddTri(
-			*radialPoints[(i % a_nSubdivisionsHorz) + a_nSubdivisionsHorz * (a_nSubdivisionsVert- 2)],
-			*radialPoints[((i + 1) % a_nSubdivisionsHorz) + a_nSubdivisionsHorz * (a_nSubdivisionsVert - 2)],
+			radialPoints[(i % a_nSubdivisionsHorz) + a_nSubdivisionsHorz * (a_nSubdivisionsVert- 2)],
+			radialPoints[((i + 1) % a_nSubdivisionsHorz) + a_nSubdivisionsHorz * (a_nSubdivisionsVert - 2)],
 			centerTop);
 	}
 
