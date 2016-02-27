@@ -83,7 +83,7 @@ public:
 	ARGUMENTS:
 	OUTPUT: ---
 	*/
-	void GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Color);
+	void GenerateSphere(float a_fRadius, int a_nSubdivisionsHorz, int a_nSubdivisionsVert, vector3 a_v3Color);
 	/* Generates a plane shape */
 	/*
 	USAGE:

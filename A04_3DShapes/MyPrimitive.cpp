@@ -66,6 +66,7 @@ void MyPrimitive::GeneratePlane(float a_fSize, vector3 a_v3Color)
 
 	CompileObject(a_v3Color);
 }
+
 void MyPrimitive::GenerateCube(float a_fSize, vector3 a_v3Color)
 {
 	if (a_fSize < 0.01f)
@@ -108,6 +109,7 @@ void MyPrimitive::GenerateCube(float a_fSize, vector3 a_v3Color)
 
 	CompileObject(a_v3Color);
 }
+
 void MyPrimitive::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivisions, vector3 a_v3Color)
 {
 	if (a_nSubdivisions < 3)
@@ -148,6 +150,7 @@ void MyPrimitive::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivis
 	//Your code ends here
 	CompileObject(a_v3Color);
 }
+
 void MyPrimitive::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubdivisions, vector3 a_v3Color)
 {
 	if (a_nSubdivisions < 3)
@@ -199,6 +202,7 @@ void MyPrimitive::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubd
 	//Your code ends here
 	CompileObject(a_v3Color);
 }
+
 void MyPrimitive::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float a_fHeight, int a_nSubdivisions, vector3 a_v3Color)
 {
 	if (a_nSubdivisions < 3)
@@ -267,6 +271,7 @@ void MyPrimitive::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float
 	//Your code ends here
 	CompileObject(a_v3Color);
 }
+
 void MyPrimitive::GenerateTorus(float a_fOuterRadius, float a_fInnerRadius, int a_nSubdivisionsA, int a_nSubdivisionsB, vector3 a_v3Color)
 {
 	if (a_fOuterRadius <= a_fInnerRadius + 0.1f)
@@ -300,82 +305,83 @@ void MyPrimitive::GenerateTorus(float a_fOuterRadius, float a_fInnerRadius, int 
 	//Your code ends here
 	CompileObject(a_v3Color);
 }
-void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Color)
+
+void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisionsHorz, int a_nSubdivisionsVert, vector3 a_v3Color)
 {
 	//Sets minimum and maximum of subdivisions
-	if (a_nSubdivisions < 1)
+	if (a_nSubdivisionsHorz < 1)
 	{
 		GenerateCube(a_fRadius * 2, a_v3Color);
 		return;
 	}
-	if (a_nSubdivisions > 20)
-		a_nSubdivisions = 20;
+	if (a_nSubdivisionsHorz > 20)
+		a_nSubdivisionsHorz = 20;
 
 	Release();
 	Init();
 
 	//Your code starts here
-	vector3 centerBot(0, -a_fRadius, 0);												//Center bottom point
-	vector3 centerTop(0, a_fRadius, 0);													//Center top point, the peak
-	vector3** radialPoints = new vector3*[a_nSubdivisions * (a_nSubdivisions - 1)];		//Array of points for all rings
-	float angleVert = PI / a_nSubdivisions;												//Vertical angle tracker
+	vector3 centerBot(0, -a_fRadius, 0);													//Center bottom point
+	vector3 centerTop(0, a_fRadius, 0);														//Center top point, the peak
+	vector3** radialPoints = new vector3*[a_nSubdivisionsHorz * (a_nSubdivisionsVert - 1)]; //Array of points for all rings
+	float angleVert = PI / a_nSubdivisionsVert;												//Vertical angle tracker
 
-	//For each ring
-	for (int j = 1; j < a_nSubdivisions; j++)
+	//Generate each ring going up.
+	for (int j = 1; j < a_nSubdivisionsVert; j++)
 	{
-		float yClimb = -cos(angleVert);									//Normalized Y position of the current ring
-		float subRadius = sqrt(1 - yClimb * yClimb);					//Normalized radius of the current ring
-		float angleHorz = 0;											//Horizontal angle tracker
+		float yClimb = -cos(angleVert);					//Normalized Y position of the current ring
+		float subRadius = sqrt(1 - yClimb * yClimb);	//Normalized radius of the current ring
+		float angleHorz = 0;							//Horizontal angle tracker
 		
-		//For each point in a ring
-		for (int i = 0; i < a_nSubdivisions; i++)
+		//Generate each point going counter-clockwise from the top.
+		for (int i = 0; i < a_nSubdivisionsHorz; i++)
 		{
-			radialPoints[i + (j - 1) * a_nSubdivisions] = new vector3(	//Generate the point in the array
+			radialPoints[i + (j - 1) * a_nSubdivisionsHorz] = new vector3(	//Generate the point in the array
 				sin(angleHorz) * a_fRadius * subRadius,
 				yClimb * a_fRadius,
 				cos(angleHorz) * a_fRadius * subRadius);
-			angleHorz += PI * 2 / a_nSubdivisions;
+			angleHorz += PI * 2 / a_nSubdivisionsHorz;	//Increment horizontal angle for each point added.
 		}
-		angleVert += PI / a_nSubdivisions;
+		angleVert += PI / a_nSubdivisionsVert;	//Increment vertical angle for each point added.
 	}
 
 	//Add side quads
-	for (int j = 0; j < a_nSubdivisions - 2; j++)
+	for (int j = 0; j < a_nSubdivisionsVert; j++)	//For each ring except the top one.
 	{
-		for (int i = 0; i < a_nSubdivisions; i++)
+		for (int i = 0; i < a_nSubdivisionsHorz; i++)	//For each point in a ring, draw a quad to the top right.
 		{
 			AddQuad(
 				*radialPoints[
-					i % a_nSubdivisions +
-					j * a_nSubdivisions],
+					i % a_nSubdivisionsHorz +
+					j * a_nSubdivisionsHorz],
 				*radialPoints[
-					(i + 1) % a_nSubdivisions +
-					j * a_nSubdivisions],
+					(i + 1) % a_nSubdivisionsHorz +
+					j * a_nSubdivisionsHorz],
 				*radialPoints[
-					i % a_nSubdivisions +
-					(j + 1) * a_nSubdivisions],
+					i % a_nSubdivisionsHorz +
+					(j + 1) * a_nSubdivisionsHorz],
 				*radialPoints[
-					(i + 1) % a_nSubdivisions +
-					(j + 1) * a_nSubdivisions]);
+					(i + 1) % a_nSubdivisionsHorz +
+					(j + 1) * a_nSubdivisionsHorz]);
 		}
 	}
 
-	//Add bot tris
-	for (int i = 0; i < a_nSubdivisions; i++)
+	//Add bottom tris
+	for (int i = 0; i < a_nSubdivisionsHorz; i++)
 	{
 		AddTri(
 			centerBot,
-			*radialPoints[(i + 1) % a_nSubdivisions],
-			*radialPoints[i % a_nSubdivisions]);
+			*radialPoints[(i + 1) % a_nSubdivisionsHorz],
+			*radialPoints[i % a_nSubdivisionsHorz]);
 	}
 
 	//Add top tris
-	for (int i = 0; i < a_nSubdivisions; i++)
+	for (int i = 0; i < a_nSubdivisionsHorz; i++)
 	{
 
 		AddTri(
-			*radialPoints[(i % a_nSubdivisions) + a_nSubdivisions * (a_nSubdivisions - 2)],
-			*radialPoints[((i + 1) % a_nSubdivisions) + a_nSubdivisions * (a_nSubdivisions - 2)],
+			*radialPoints[(i % a_nSubdivisionsHorz) + a_nSubdivisionsHorz * (a_nSubdivisionsVert- 2)],
+			*radialPoints[((i + 1) % a_nSubdivisionsHorz) + a_nSubdivisionsHorz * (a_nSubdivisionsVert - 2)],
 			centerTop);
 	}
 
