@@ -50,14 +50,20 @@ void AppClass::Update(void)
 
 #pragma region YOUR CODE GOES HERE
 	//Calculate the position of the Earth
-	m_m4Earth = glm::rotate(IDENTITY_M4, m_fEarthTimer, vector3(0.0f, 1.0f, 0.0f));
+	m_m4Earth = glm::rotate(IDENTITY_M4, m_fEarthTimer, vector3(0.0f, 1.0f, 0.0f));			//Rotate earth around the moon.
+	m_m4Earth *= distanceEarth;																//Move earth to its solar orbit distance.
+	m_m4Earth = glm::rotate(m_m4Earth, 90.0f, vector3(0.0f, 0.0f, 1.0f));					//Rotate earth sideways to align torus.
+	m_m4Earth = glm::rotate(m_m4Earth, 360 * m_fEarthTimer, vector3(1.0f, 0.0f, 0.0f));		//Rotate earth 360 times/year.
 
 	//Calculate the position of the Moon
-	m_m4Moon = glm::rotate(IDENTITY_M4, m_fMoonTimer, vector3(0.0f, 1.0f, 0.0f));
+	m_m4Moon = glm::translate(IDENTITY_M4, glm::vec3(m_m4Earth[3]));						//Move the moon to the earth's position.
+	m_m4Moon = glm::rotate(m_m4Moon, 360 * -m_fMoonTimer, vector3(0.0f, 1.0f, 0.0f));		//Rotate the moon at 1/28th the earth's rotation.
+	m_m4Moon = glm::translate(m_m4Moon, vector3(2.0f, 0.0f, 0.0f));							//Translate the moon to its orbital distance.
+	m_m4Moon = glm::rotate(m_m4Moon, 90.0f, vector3(0.0f, 0.0f, 1.0f));						//Rotate the moon sideways to align torus.
 #pragma endregion
 
 #pragma region Print info
-	printf("Earth Day: %.3f, Moon Day: %.3f\r", m_fEarthTimer, m_fMoonTimer);//print the Frames per Second
+	printf("Earth Day: %.3f, Moon Orbit: %.3f\r", m_fEarthTimer, m_fMoonTimer);//print the Frames per Second
 	
 	//Indicate the FPS
 	int nFPS = m_pSystem->GetFPS();
@@ -65,14 +71,14 @@ void AppClass::Update(void)
 	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), REYELLOW);
 	m_pMeshMngr->Print("Earth Day: ", REWHITE);
 	m_pMeshMngr->PrintLine(std::to_string(m_fEarthTimer), REBLUE);
-	m_pMeshMngr->Print("Moon Day: ", REWHITE);
+	m_pMeshMngr->Print("Moon Orbit: ", REWHITE);
 	m_pMeshMngr->PrintLine(std::to_string(m_fMoonTimer), REBLUE);
 	m_pMeshMngr->Print("FPS:");
 	m_pMeshMngr->Print(std::to_string(nFPS), RERED);
 #pragma endregion
 
-	m_fMoonTimer++;//Increase Moon timer
-	m_fEarthTimer = m_fMoonTimer / 28.0f; //divide by the moon's day
+	m_fEarthTimer += .05;//Increase Moon timer
+	m_fMoonTimer = m_fEarthTimer / 28.0f; //divide by the moon's day
 }
 
 void AppClass::Display(void)
