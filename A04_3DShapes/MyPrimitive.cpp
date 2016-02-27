@@ -332,9 +332,6 @@ void MyPrimitive::GenerateTorus(float a_fOuterRadius, float a_fInnerRadius, int 
 				points[
 					(i + 1) % a_nSubdivisionsB +
 					(j + 1) % a_nSubdivisionsA * a_nSubdivisionsB]);
-			std::cout <<
-				(i + 1) % a_nSubdivisionsB +
-				(j + 1) % a_nSubdivisionsA * a_nSubdivisionsB << std::endl;
 		}
 	}
 
