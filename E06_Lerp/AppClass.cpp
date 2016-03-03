@@ -1,42 +1,18 @@
 #include "AppClass.h"
 void AppClass::InitWindow(String a_sWindowName)
 {
-	super::InitWindow("Sandbox"); // Window Name
+	super::InitWindow("Bronner Example"); // Window Name
 
-	// Set the clear color based on Microsoft's CornflowerBlue (default in XNA)
-	//if this line is in Init Application it will depend on the .cfg file, if it
-	//is on the InitVariables it will always force it regardless of the .cfg
 	m_v4ClearColor = vector4(0.4f, 0.6f, 0.9f, 0.0f);
 }
 
 void AppClass::InitVariables(void)
 {
-	m_selection = std::pair<int, int>(-1, -1);
-	//Set the camera at a position other than the default
+	//Camera position
 	m_pCameraMngr->SetPositionTargetAndView(vector3(0.0f, 2.5f, 12.0f), vector3(0.0f, 2.5f, 11.0f), REAXISY);
 
-	m_pLightMngr->SetColor(REWHITE, 0);
-	m_pLightMngr->SetIntensity(0.1f, 0);
-	m_pLightMngr->SetColor(REWHITE, 1);
-	m_pLightMngr->SetIntensity(0.5f, 1);
-	m_pLightMngr->SetPosition(vector3(0.0f, 1.0f,-1.0f), 1);
-
-	//Load a model onto the Mesh manager
-	//m_pMeshMngr->LoadModel("tests\\Cubev.fbx", "Unikitty");
-	int nCubes = 10;
-	vector3 v3Start(-nCubes/2.0f, 0.0f, -nCubes / 2.0f);
-	m_pMeshMngr->LoadModel("Cube.obj", "ElCubo");
-	m_pMeshMngr->SetShaderProgramByName("ElCubo", "Phong");
-	for (uint n = 0; n < nCubes; n++)
-	{
-		if (v3Start != vector3(0.0f))
-		{
-			String sName = "Cube_" + std::to_string(n);
-			m_pMeshMngr->LoadModel("Cube.obj", sName, false, glm::translate(v3Start));
-			m_pMeshMngr->SetShaderProgramByName(sName, "Phong");
-		}
-		v3Start += vector3(1.0f, 0.0f, 1.0f);
-	}
+	//Load Steve
+	m_pMeshMngr->LoadModel("Minecraft\\Steve.obj", "Steve");
 }
 
 void AppClass::Update(void)
@@ -53,7 +29,35 @@ void AppClass::Update(void)
 
 	//Call the arcball method
 	ArcBall();
-	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3Position) * ToMatrix4(m_qArcBall), 0);
+	
+	double dt = m_pSystem->LapClock();
+	static double fRunTime = 0.0f;
+	fRunTime += dt;
+
+	vector3 v3Start = vector3(-5.0f, 0.0f, 0.0f);
+	vector3 v3End = vector3(5.0f, 0.0f, 0.0f);
+	static float fp = MapValue(fRunTime, 0.0, 10.0, 0.0, 1.0);		//When it's static, if it's already declared, it will reuse the previous value. It keeps saving the value! :O
+
+	vector3 v3Int = glm::lerp(v3Start, v3End, fp);
+
+	matrix4 m4Temp = glm::translate(v3Int);
+
+	/*
+	//Steve matrix
+	matrix4 m4Temp = glm::translate(vector3(-5.0f, 0.0f, 0.0f));
+
+	//Inverse, expensive
+	m4Temp = m4Temp * glm::inverse(m4Temp);
+
+	//Transpose-inverse. Is not.
+	matrix3 m3Temp(m4Temp);
+	m3Temp = glm::transpose(m3Temp);			//Transpose of a rotation matrix is its inverse
+	m4Temp = m4Temp * matrix4(m3Temp);			//Apply transposed rotation to mat4
+	m4Temp[3] = m4Temp[3] + (m4Temp[3] * -1);	//Inverse translation
+	m4Temp[3][3] = 1;							//Bottom corner fix for matrix
+	*/
+
+	m_pMeshMngr->SetModelMatrix(m4Temp, "Steve"); //m_pMeshMngr is a singleton, it exists everywhere.
 	
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
