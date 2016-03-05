@@ -3,16 +3,30 @@ void AppClass::InitWindow(String a_sWindowName)
 {
 	super::InitWindow("Bronner Example"); // Window Name
 
-	m_v4ClearColor = vector4(0.4f, 0.6f, 0.9f, 0.0f);
+	m_v4ClearColor = vector4(0.05f, 0.41f, 0.67f, 0.0f);	//LEGO Blue
 }
 
 void AppClass::InitVariables(void)
 {
 	//Camera position
-	m_pCameraMngr->SetPositionTargetAndView(vector3(0.0f, 2.5f, 12.0f), vector3(0.0f, 2.5f, 11.0f), REAXISY);
+	m_pCameraMngr->SetPosition(vector3(0.0f, 0.0f, 35.0f));
 
-	//Load Steve
-	m_pMeshMngr->LoadModel("Minecraft\\Steve.obj", "Steve");
+	//Spheres
+	srand(time(NULL));
+	m_nObjects = rand() % 23 + 5;
+	m_pSpheres = new PrimitiveClass[m_nObjects];
+	m_pMatricies = new matrix4[m_nObjects];
+
+	//Position vectors
+	vector3 v3Start = vector3(-m_nObjects, 0.0f, 0.0f);
+	vector3 v3End = vector3(m_nObjects, 0.0f, 0.0f);
+
+	for (int i = 0; i < m_nObjects; i++)
+	{
+		float fPercent = MapValue(static_cast<float>(i), 0.0f, static_cast<float>(m_nObjects), 0.0f, 1.0f);
+		m_pSpheres[i].GenerateSphere(1, 5, vector3(fPercent, 0.0f, 0.0f));
+		m_pMatricies[i] = glm::translate(glm::lerp(v3Start, v3End, fPercent));
+	}
 }
 
 void AppClass::Update(void)
@@ -30,6 +44,8 @@ void AppClass::Update(void)
 	//Call the arcball method
 	ArcBall();
 	
+	//Class stuff
+	/*
 	double dt = m_pSystem->LapClock();
 	static double fRunTime = 0.0f;
 	fRunTime += dt;
@@ -41,7 +57,9 @@ void AppClass::Update(void)
 	vector3 v3Int = glm::lerp(v3Start, v3End, fp);
 
 	matrix4 m4Temp = glm::translate(v3Int);
+	*/
 
+	//More class stuff
 	/*
 	//Steve matrix
 	matrix4 m4Temp = glm::translate(vector3(-5.0f, 0.0f, 0.0f));
@@ -55,9 +73,9 @@ void AppClass::Update(void)
 	m4Temp = m4Temp * matrix4(m3Temp);			//Apply transposed rotation to mat4
 	m4Temp[3] = m4Temp[3] + (m4Temp[3] * -1);	//Inverse translation
 	m4Temp[3][3] = 1;							//Bottom corner fix for matrix
-	*/
 
 	m_pMeshMngr->SetModelMatrix(m4Temp, "Steve"); //m_pMeshMngr is a singleton, it exists everywhere.
+	*/
 	
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
@@ -97,6 +115,14 @@ void AppClass::Display(void)
 		m_pMeshMngr->AddGridToQueue(1.0f, REAXIS::XY, REBLUE * 0.75f); //renders the XY grid with a 100% scale
 		break;
 	}
+
+	for (int i = 0; i < m_nObjects; i++)
+	{
+		m_pSpheres[i].Render(
+			m_pCameraMngr->GetProjectionMatrix(),
+			m_pCameraMngr->GetViewMatrix(),
+			m_pMatricies[i]);
+	}
 	
 	m_pMeshMngr->Render(); //renders the render list
 
@@ -106,4 +132,6 @@ void AppClass::Display(void)
 void AppClass::Release(void)
 {
 	super::Release(); //release the memory of the inherited fields
+	delete[] m_pSpheres;
+	delete[] m_pMatricies;
 }
