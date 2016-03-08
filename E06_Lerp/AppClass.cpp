@@ -23,7 +23,7 @@ void AppClass::InitVariables(void)
 
 	for (int i = 0; i < m_nObjects; i++)
 	{
-		float fPercent = MapValue(static_cast<float>(i), 0.0f, static_cast<float>(m_nObjects), 0.0f, 1.0f);
+		float fPercent = MapValue(static_cast<float>(i), 0.0f, static_cast<float>(m_nObjects) - 1, 0.0f, 1.0f);
 		m_pSpheres[i].GenerateSphere(1, 5, vector3(fPercent, 0.0f, 0.0f));
 		m_pMatricies[i] = glm::translate(glm::lerp(v3Start, v3End, fPercent));
 	}
