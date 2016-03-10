@@ -8,6 +8,29 @@ void AppClass::InitVariables(void)
 {
 	m_pCameraMngr->SetPositionTargetAndView(vector3(0.0f, 0.0f, 15.0f), ZERO_V3, REAXISY);
 
+	//Points
+	points = new vector3[pointsCount];
+	points[0] = vector3(-4.0f, -2.0f, 5.0f);
+	points[1] = vector3(1.0f, -2.0f, 5.0f);
+	points[2] = vector3(-3.0f, -1.0f, 3.0f);
+	points[3] = vector3(2.0f, -1.0f, 3.0f);
+	points[4] = vector3(-2.0f, 0.0f, 0.0f);
+	points[5] = vector3(3.0f, 0.0f, 0.0f);
+	points[6] = vector3(-1.0f, 1.0f, -3.0f);
+	points[7] = vector3(4.0f, 1.0f, -3.0f);
+	points[8] = vector3(0.0f, 2.0f, -5.0f);
+	points[9] = vector3(5.0f, 2.0f, -5.0f);
+	points[10] = vector3(1.0f, 3.0f, -5.0f);
+
+	//Spheres
+	m_pSpheres = new PrimitiveClass[pointsCount];
+	m_pMatricies = new matrix4[pointsCount];
+	for (int i = 0; i < pointsCount; i++)
+	{
+		m_pSpheres[i].GenerateSphere(0.1, 4, vector3(1.0, 0.0, 0.0));
+		m_pMatricies[i] = glm::translate(points[i]);
+	}
+
 	// Color of the screen
 	m_v4ClearColor = vector4(REBLACK, 1); // Set the clear color to black
 
@@ -32,11 +55,12 @@ void AppClass::Update(void)
 
 	//cumulative time
 	static double fRunTime = 0.0f; //How much time has passed since the program started
-	fRunTime += fTimeSpan; 
+	fRunTime += fTimeSpan;
+	fRunSpan += fTimeSpan;
 #pragma endregion
 
 #pragma region Your Code goes here
-	m_pMeshMngr->SetModelMatrix(IDENTITY_M4, "WallEye");
+	m_pMeshMngr->SetModelMatrix(glm::translate(glm::lerp(points[0], points[1], fRunSpan)), "WallEye");
 #pragma endregion
 
 #pragma region Does not need changes but feel free to change anything here
@@ -48,8 +72,12 @@ void AppClass::Update(void)
 
 	//Print info on the screen
 	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), REYELLOW);
+	m_pMeshMngr->Print("fRunTime:");
+	m_pMeshMngr->PrintLine(std::to_string(fRunTime), REWHITE);
+	m_pMeshMngr->Print("fRunSpan:");
+	m_pMeshMngr->PrintLine(std::to_string(fRunSpan), REWHITE);
 	m_pMeshMngr->Print("FPS:");
-	m_pMeshMngr->Print(std::to_string(nFPS), RERED);
+	m_pMeshMngr->PrintLine(std::to_string(nFPS), RERED);
 #pragma endregion
 }
 
@@ -73,6 +101,14 @@ void AppClass::Display(void)
 	case CAMERAMODE::CAMROTHOZ:
 		m_pMeshMngr->AddGridToQueue(1.0f, REAXIS::XY, REBLUE * 0.75f); //renders the XY grid with a 100% scale
 		break;
+	}
+	
+	for (int i = 0; i < pointsCount; i++)
+	{
+		m_pSpheres[i].Render(
+			m_pCameraMngr->GetProjectionMatrix(),
+			m_pCameraMngr->GetViewMatrix(),
+			m_pMatricies[i]);
 	}
 	
 	m_pMeshMngr->Render(); //renders the render list
