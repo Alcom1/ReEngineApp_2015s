@@ -5,15 +5,15 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "00_Sandbox", "00_Sandbox\00_Sandbox_VS15.vcxproj", "{F5D6D2E1-6FFD-402B-8EE3-DED4FE407028}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_Basics", "01_Basics\01_Basics_VS15.vcxproj", "{425ED9DA-852E-4F61-BE06-487F68A6187E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_Basics", "01_Basics\01_Basics.vcxproj", "{425ED9DA-852E-4F61-BE06-487F68A6187E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02_Inheriting", "02_Inheriting\02_Inheriting_VS15.vcxproj", "{F1EDF2C3-8663-42FF-89D7-D0C4857D4358}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02_Inheriting", "02_Inheriting\02_Inheriting.vcxproj", "{F1EDF2C3-8663-42FF-89D7-D0C4857D4358}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "03_SFML_Input", "03_SFML_Input\03_SFML_Input_VS15.vcxproj", "{1EA67B6E-CAF1-4F2A-8FB5-99B5D30E3004}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "03_SFML_Input", "03_SFML_Input\03_SFML_Input.vcxproj", "{1EA67B6E-CAF1-4F2A-8FB5-99B5D30E3004}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "04_MeshRendering", "04_MeshRendering\04_MeshRendering_VS15.vcxproj", "{D04CA8CD-8C31-4F09-A363-33BFC486C26F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "04_MeshRendering", "04_MeshRendering\04_MeshRendering.vcxproj", "{D04CA8CD-8C31-4F09-A363-33BFC486C26F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "05_InstanceRendering", "05_InstanceRendering\05_InstanceRendering_VS15.vcxproj", "{E9B44697-A740-484E-BFCC-B9A007E242A2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "05_InstanceRendering", "05_InstanceRendering\05_InstanceRendering.vcxproj", "{E9B44697-A740-484E-BFCC-B9A007E242A2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModelViewer", "ModelViewer\ModelViewer_VS15.vcxproj", "{FB51C0AB-6E10-4DEB-9D27-A3C31251A36D}"
 EndProject
