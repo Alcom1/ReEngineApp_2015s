@@ -55,7 +55,6 @@ void AppClass::Update(void)
 	float fPosition = glm::lerp(v3Start, v3End, fDifference).y;
 
 	//mOrientation = glm::rotate(IDENTITY_M4, fPosition, vector3(0.0f, 1.0f, 0.0f));
-
 	m_pMeshMngr->SetModelMatrix(mOrientation, "Steve");
 	
 	//Adds all loaded instance to the render list
