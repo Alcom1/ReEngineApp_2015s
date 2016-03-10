@@ -56,7 +56,9 @@ void AppClass::Update(void)
 	//cumulative time
 	static double fRunTime = 0.0f; //How much time has passed since the program started
 	fRunTime += fTimeSpan;
-	fRunSpan += fTimeSpan;
+
+	//Use distScale and length between points for constant speed
+	fRunSpan += fTimeSpan * distScale / glm::length(points[(runCounter + 1) % pointsCount] - points[runCounter % pointsCount]);
 #pragma endregion
 
 #pragma region Your Code goes here 
@@ -135,4 +137,6 @@ void AppClass::Display(void)
 void AppClass::Release(void)
 {
 	super::Release(); //release the memory of the inherited fields
+	delete[] m_pSpheres;	//GARBAGE DAY!
+	delete[] m_pMatricies;
 }

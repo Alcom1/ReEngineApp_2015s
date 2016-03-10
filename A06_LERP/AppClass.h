@@ -14,7 +14,7 @@ class AppClass : public ReEngAppClass
 {
 	float fDuration = 1.0f;		//Time Duration of the stops
 	float fRunSpan = 0.0f;		//Counter for lerping between points 0-1
-	float speedScale = 5.0f;	//Multiplier for constant speed
+	float distScale = 5.0f;		//Distance at which speed = 1 for constant speed between points
 	int runCounter = 0;			//Unwrapped index of the first point in the current set of points being travelled between
 	int pointsCount = 11;		//Number of points
 
