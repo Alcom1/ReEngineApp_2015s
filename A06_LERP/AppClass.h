@@ -12,12 +12,15 @@ using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
 class AppClass : public ReEngAppClass
 {
-	float fDuration = 1.0f; //Time Duration of the stops
-	float fRunSpan = 0.0f;
-	int pointsCount = 11;
-	vector3* points = nullptr;
-	PrimitiveClass* m_pSpheres = nullptr;
-	matrix4* m_pMatricies = nullptr;
+	float fDuration = 1.0f;		//Time Duration of the stops
+	float fRunSpan = 0.0f;		//Counter for lerping between points 0-1
+	float speedScale = 5.0f;	//Multiplier for constant speed
+	int runCounter = 0;			//Unwrapped index of the first point in the current set of points being travelled between
+	int pointsCount = 11;		//Number of points
+
+	vector3* points = nullptr;				//Points
+	PrimitiveClass* m_pSpheres = nullptr;	//Sphere primitives
+	matrix4* m_pMatricies = nullptr;		//Sphere transforms
 public:
 	typedef ReEngAppClass super;
 	/*

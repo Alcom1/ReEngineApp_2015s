@@ -59,8 +59,22 @@ void AppClass::Update(void)
 	fRunSpan += fTimeSpan;
 #pragma endregion
 
-#pragma region Your Code goes here
-	m_pMeshMngr->SetModelMatrix(glm::translate(glm::lerp(points[0], points[1], fRunSpan)), "WallEye");
+#pragma region Your Code goes here 
+	//I'll put my code wherever I feel like, thank you.
+	m_pMeshMngr->SetModelMatrix(
+		glm::translate(
+			glm::lerp(										//Lerp translation between two points
+				points[runCounter % pointsCount],			//Point 1 (Mod wrapped to be between points)
+				points[(runCounter + 1) % pointsCount],		//Point 2 (Mod wrapped to be between points)
+				fRunSpan)),
+			"WallEye");
+
+	//Go to the next set of points after hitting the second point
+	if (fRunSpan > 1)
+	{
+		runCounter++;
+		fRunSpan = 0.0;
+	}
 #pragma endregion
 
 #pragma region Does not need changes but feel free to change anything here
@@ -76,6 +90,8 @@ void AppClass::Update(void)
 	m_pMeshMngr->PrintLine(std::to_string(fRunTime), REWHITE);
 	m_pMeshMngr->Print("fRunSpan:");
 	m_pMeshMngr->PrintLine(std::to_string(fRunSpan), REWHITE);
+	m_pMeshMngr->Print("Distance:");
+	m_pMeshMngr->PrintLine(std::to_string(glm::length(points[(runCounter + 1) % pointsCount] - points[runCounter % pointsCount])), REWHITE);
 	m_pMeshMngr->Print("FPS:");
 	m_pMeshMngr->PrintLine(std::to_string(nFPS), RERED);
 #pragma endregion
