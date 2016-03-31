@@ -43,6 +43,53 @@ void AppClass::ProcessKeyboard(void)
 		m_pCameraMngr->MoveVertical(fSpeed);
 #pragma endregion
 
+#pragma region Sun Movement
+	//Sun x-axis movement
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+	{
+		if (!bModifier)
+		{
+			v_sunOffset += vector3(0.1f, 0.0f, 0.0f);
+		}
+		else
+		{
+			v_sunOffset -= vector3(0.1f, 0.0f, 0.0f);
+		}
+	}
+
+	//Sun y-axis movement
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
+	{
+		if (!bModifier)
+		{
+			v_sunOffset += vector3(0.0f, 0.1f, 0.0f);
+		}
+		else
+		{
+			v_sunOffset -= vector3(0.0f, 0.1f, 0.0f);
+		}
+	}
+
+	//Sun z-axis movement
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+	{
+		if (!bModifier)
+		{
+			v_sunOffset += vector3(0.0f, 0.0f, 0.1f);
+		}
+		else
+		{
+			v_sunOffset -= vector3(0.0f, 0.0f, 0.1f);
+		}
+	}
+
+	//Sun reset
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	{
+		v_sunOffset = vector3(0.0f, 0.0f, 0.0f);
+	}
+#pragma endregion
+
 #pragma region Other Actions
 	ON_KEY_PRESS_RELEASE(Escape, NULL, PostMessage(m_pWindow->GetHandler(), WM_QUIT, NULL, NULL));
 	ON_KEY_PRESS_RELEASE(F1, NULL, m_pCameraMngr->SetCameraMode(CAMPERSP));

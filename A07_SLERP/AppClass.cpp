@@ -39,18 +39,34 @@ void AppClass::Update(void)
 	//Getting the time between calls
 	double fCallTime = m_pSystem->LapClock();
 	//Counting the cumulative time
-	static double fRunTime = 0.0f;
+	static float fRunTime = 0.0f;
 	fRunTime += fCallTime;
 
 	//Earth Orbit
-	double fEarthHalfOrbTime = 182.5f * m_fDay; //Earths orbit around the sun lasts 365 days / half the time for 2 stops
+	float fEarthHalfOrbTime = 182.5f * m_fDay; //Earths orbit around the sun lasts 365 days / half the time for 2 stops
 	float fEarthHalfRevTime = 0.5f * m_fDay; // Move for Half a day
 	float fMoonHalfOrbTime = 14.0f * m_fDay; //Moon's orbit is 28 earth days, so half the time for half a route
 
+	quaternion q_1 = quaternion(vector3(0.0f, 0.0f, 0.0f));		//Quaternion representing no rotation.
+	quaternion q_2 = quaternion(vector3(0.0f, 180.0f, 0.0f));	//Quaternion representing a semicircle rotation.
+
+	matrix4 m_m4Sun = glm::scale(glm::translate(v_sunOffset), vector3(5.936));				//Translate sun to offset position and scale it.
+	
+	matrix4 m_m4Earth = glm::translate(IDENTITY_M4, glm::vec3(m_m4Sun[3]));					//Set translation of Earth to Sun's
+	m_m4Earth *= glm::mat4_cast(glm::mix(q_1, q_2, fRunTime / fEarthHalfOrbTime));			//Rotate Earth by oribit
+	m_m4Earth = glm::translate(m_m4Earth, vector3(11.0f, 0.0f, 0.0f));						//Translate Earth away from Sun
+	m_m4Earth *= glm::mat4_cast(glm::mix(q_1, q_2, fRunTime / fEarthHalfRevTime));			//Rotate Earth by day
+	m_m4Earth = glm::scale(m_m4Earth, vector3(0.524));										//Scale Earth
+
+	matrix4 m_m4Moon = glm::translate(IDENTITY_M4, glm::vec3(m_m4Earth[3]));				//Set translation of Moon to Earth's
+	m_m4Moon *= glm::mat4_cast(glm::mix(q_1, q_2, fRunTime / fMoonHalfOrbTime));			//Rotate Moon by orbit
+	m_m4Moon = glm::translate(m_m4Moon, vector3(2.0f, 0.0f, 0.0f));							//Translate Moon away from Earth
+	m_m4Moon = glm::scale(m_m4Moon, vector3(0.141));										//Scale Moon
+
 	//Setting the matrices
-	m_pMeshMngr->SetModelMatrix(IDENTITY_M4, "Sun");
-	m_pMeshMngr->SetModelMatrix(IDENTITY_M4, "Earth");
-	m_pMeshMngr->SetModelMatrix(IDENTITY_M4, "Moon");
+	m_pMeshMngr->SetModelMatrix(m_m4Sun, "Sun");
+	m_pMeshMngr->SetModelMatrix(m_m4Earth, "Earth");
+	m_pMeshMngr->SetModelMatrix(m_m4Moon, "Moon");
 
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
