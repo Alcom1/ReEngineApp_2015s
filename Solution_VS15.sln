@@ -31,6 +31,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E06_Lerp", "E06_Lerp\E06_Le
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "C1_LERP", "C1_LERP\C1_LERP.vcxproj", "{32854B1F-8DCB-4075-87B2-ADF1AAB448B3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E10_Projections", "E10_Projections\E10_Projections.vcxproj", "{9B6650A4-8EB9-4CBC-A25C-10726F0BD80D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E08_Gimbal_Lock", "E08_Gimbal Lock\E08_Gimbal Lock.vcxproj", "{FCF38D13-439E-4DEC-BB89-2BB6455922AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -147,6 +151,18 @@ Global
 		{32854B1F-8DCB-4075-87B2-ADF1AAB448B3}.Release|x64.ActiveCfg = Release|Win32
 		{32854B1F-8DCB-4075-87B2-ADF1AAB448B3}.Release|x86.ActiveCfg = Release|Win32
 		{32854B1F-8DCB-4075-87B2-ADF1AAB448B3}.Release|x86.Build.0 = Release|Win32
+		{9B6650A4-8EB9-4CBC-A25C-10726F0BD80D}.Debug|x64.ActiveCfg = Debug|Win32
+		{9B6650A4-8EB9-4CBC-A25C-10726F0BD80D}.Debug|x86.ActiveCfg = Debug|Win32
+		{9B6650A4-8EB9-4CBC-A25C-10726F0BD80D}.Debug|x86.Build.0 = Debug|Win32
+		{9B6650A4-8EB9-4CBC-A25C-10726F0BD80D}.Release|x64.ActiveCfg = Release|Win32
+		{9B6650A4-8EB9-4CBC-A25C-10726F0BD80D}.Release|x86.ActiveCfg = Release|Win32
+		{9B6650A4-8EB9-4CBC-A25C-10726F0BD80D}.Release|x86.Build.0 = Release|Win32
+		{FCF38D13-439E-4DEC-BB89-2BB6455922AD}.Debug|x64.ActiveCfg = Debug|Win32
+		{FCF38D13-439E-4DEC-BB89-2BB6455922AD}.Debug|x86.ActiveCfg = Debug|Win32
+		{FCF38D13-439E-4DEC-BB89-2BB6455922AD}.Debug|x86.Build.0 = Debug|Win32
+		{FCF38D13-439E-4DEC-BB89-2BB6455922AD}.Release|x64.ActiveCfg = Release|Win32
+		{FCF38D13-439E-4DEC-BB89-2BB6455922AD}.Release|x86.ActiveCfg = Release|Win32
+		{FCF38D13-439E-4DEC-BB89-2BB6455922AD}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
