@@ -35,6 +35,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E10_Projections", "E10_Proj
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E08_Gimbal_Lock", "E08_Gimbal Lock\E08_Gimbal Lock.vcxproj", "{FCF38D13-439E-4DEC-BB89-2BB6455922AD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A07_SLERP", "A07_SLERP\A07_SLERP.vcxproj", "{337B81CF-66EB-4676-8BA0-BA3497CBF73A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -163,6 +165,12 @@ Global
 		{FCF38D13-439E-4DEC-BB89-2BB6455922AD}.Release|x64.ActiveCfg = Release|Win32
 		{FCF38D13-439E-4DEC-BB89-2BB6455922AD}.Release|x86.ActiveCfg = Release|Win32
 		{FCF38D13-439E-4DEC-BB89-2BB6455922AD}.Release|x86.Build.0 = Release|Win32
+		{337B81CF-66EB-4676-8BA0-BA3497CBF73A}.Debug|x64.ActiveCfg = Debug|Win32
+		{337B81CF-66EB-4676-8BA0-BA3497CBF73A}.Debug|x86.ActiveCfg = Debug|Win32
+		{337B81CF-66EB-4676-8BA0-BA3497CBF73A}.Debug|x86.Build.0 = Debug|Win32
+		{337B81CF-66EB-4676-8BA0-BA3497CBF73A}.Release|x64.ActiveCfg = Release|Win32
+		{337B81CF-66EB-4676-8BA0-BA3497CBF73A}.Release|x86.ActiveCfg = Release|Win32
+		{337B81CF-66EB-4676-8BA0-BA3497CBF73A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
