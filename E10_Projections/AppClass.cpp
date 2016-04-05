@@ -13,12 +13,11 @@ void AppClass::InitVariables(void)
 	m_pCylinder = new PrimitiveClass();
 	m_pCylinder->GenerateCylinder(1.0f, 2.0f, 10, REGREEN);
 
+	Camera* cam = Camera::GetInstance();
+
 	//Calculate the first projections
-	m_m4Projection = glm::perspective(90.0f, 1080.0f / 768.0f, 0.01f, 1000.0f);
-	m_m4View = glm::lookAt(
-		glm::vec3(0.0f, 5.0f, 5.0f),	//Where the camera is
-		glm::vec3(0.0f, 0.0f, 0.0f),	//Where the target is 
-		glm::vec3(0.0f, 1.0f, 0.0f));	//Where up is
+	m_m4Projection = cam->GetProjection(false);
+	m_m4View = cam->GetView();
 }
 
 void AppClass::Update(void)

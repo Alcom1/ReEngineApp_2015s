@@ -7,6 +7,7 @@ Date: 2015/09
 
 #include "RE\ReEngAppClass.h"
 #include <SFML\Graphics.hpp>
+#include "Camera.h"
 //#include <chrono>
 
 using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
