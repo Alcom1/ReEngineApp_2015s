@@ -19,6 +19,8 @@ class AppClass : public ReEngAppClass
 
 	matrix4 m_m4Projection;
 	matrix4 m_m4View;
+
+	float m_fTemp = 0.0f;
 public:
 	typedef ReEngAppClass super;
 
