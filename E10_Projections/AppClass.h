@@ -16,11 +16,10 @@ class AppClass : public ReEngAppClass
 {
 	PrimitiveClass* m_pCone = nullptr;
 	PrimitiveClass* m_pCylinder = nullptr;
+	Camera* cam = Camera::GetInstance();
 
 	matrix4 m_m4Projection;
 	matrix4 m_m4View;
-
-	float m_fTemp = 0.0f;
 public:
 	typedef ReEngAppClass super;
 
