@@ -11,7 +11,7 @@ void AppClass::InitVariables(void)
 
 	//Generate the Cylinder
 	m_pCylinder = new PrimitiveClass();
-	m_pCylinder->GenerateCylinder(1.0f, 2.0f, 10, REGREEN);
+	m_pCylinder->GenerateCylinder(10.0f, 2.0f, 10, REGREEN);
 
 	cam->SetPosition(vector3(0.0f, 4.0f, -4.0f));
 	cam->SetTarget(vector3(0.0f, 0.0f, 0.0f));
@@ -50,7 +50,7 @@ void AppClass::Display(void)
 	m_pCone->Render(m_m4Projection, m_m4View, IDENTITY_M4);
 
 	//Render the cylinder
-	m_pCylinder->Render(m_m4Projection, m_m4View, glm::translate(IDENTITY_M4, REAXISZ * -2.0f));
+	m_pCylinder->Render(m_m4Projection, m_m4View, glm::translate(IDENTITY_M4, REAXISY * -2.0f));
 
 	//Render the rest of the meshes
 	m_pMeshMngr->Render();

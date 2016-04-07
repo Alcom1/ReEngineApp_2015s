@@ -42,7 +42,10 @@ public:
 	//Return the projection matrix of the camera
 	matrix4 GetProjection(bool bOrthographic)
 	{
-		return glm::perspective(120.0f, 1080.0f / 768.0f, 0.01f, 1000.0f);
+		if (bOrthographic)
+			return glm::ortho(10.8f, -10.8f, -7.68f, 7.68f, 0.01f, 10000.0f);
+		else
+			return glm::perspective(90.0f, 1080.0f / 768.0f, 0.01f, 1000.0f);
 	}
 	
 	//Set the position of the camera
