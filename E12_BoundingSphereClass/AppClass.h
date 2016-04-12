@@ -24,6 +24,9 @@ class AppClass : public ReEngAppClass
 	vector3 m_v3Center2;
 	float m_fRadius2 = 0.0f;
 
+	matrix4 m4_steve;
+	matrix4 m4_creep;
+
 public:
 	typedef ReEngAppClass super;
 	/*
