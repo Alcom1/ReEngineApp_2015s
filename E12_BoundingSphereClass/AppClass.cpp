@@ -52,10 +52,6 @@ void AppClass::InitVariables(void)
 	m_v3Center1 = (v3Max + v3Min)/2.0f;
 	m_fRadius1 = glm::distance(m_v3Center1, v3Max);
 
-	m_pSphere1 = new PrimitiveClass();
-	m_pSphere1->GenerateSphere(m_fRadius1, 10, REGREEN);
-
-
 	//Creeper
 	vertexList = m_pMeshMngr->GetVertexList("Creeper");
 	nVertexCount = vertexList.size();
@@ -86,9 +82,6 @@ void AppClass::InitVariables(void)
 
 	m_v3Center2 = (v3Max + v3Min) / 2.0f;
 	m_fRadius2 = glm::distance(m_v3Center2, v3Max);
-
-	m_pSphere2 = new PrimitiveClass();
-	m_pSphere2->GenerateSphere(m_fRadius2, 10, REGREEN);
 }
 
 void AppClass::Update(void)
@@ -117,8 +110,8 @@ void AppClass::Update(void)
 	bool bAreColliding = false;
 
 	//Collision check goes here
-	vector3 v3TempA = vector3(m4_steve * vector4(m_v3Center1, 0.0f));
-	vector3 v3TempB = vector3(m4_creep * vector4(m_v3Center1, 0.0f));
+	vector3 v3TempA = vector3(m4_steve * vector4(m_v3Center1, 0.0f) + m4_steve[3]);
+	vector3 v3TempB = vector3(m4_creep * vector4(m_v3Center1, 0.0f) + m4_creep[3]);
 
 	if (glm::distance(v3TempA, v3TempB) < m_fRadius1 + m_fRadius2)
 	{
@@ -136,13 +129,11 @@ void AppClass::Update(void)
 		m_pMeshMngr->GetModelMatrix("Steve") *
 		glm::translate(m_v3Center1) *
 		glm::scale(vector3(m_fRadius1 * 2.0f));
-	//m_pSphere1->Render(m4Projection, m4View, m4Model);
 	
 	m4_creep =
 		m_pMeshMngr->GetModelMatrix("Creeper") *
 		glm::translate(m_v3Center2) *
 		glm::scale(vector3(m_fRadius2 * 2.0f));
-	//m_pSphere2->Render(m4Projection, m4View, m4Model);
 
 	//Queue
 	m_pMeshMngr->AddSphereToQueue(m4_steve, RERED, WIRE);
@@ -192,17 +183,5 @@ void AppClass::Display(void)
 
 void AppClass::Release(void)
 {
-	if (m_pSphere1 != nullptr)
-	{
-		delete m_pSphere1;
-		m_pSphere1 = nullptr;
-
-	}
-	if (m_pSphere2 != nullptr)
-	{
-		delete m_pSphere2;
-		m_pSphere2 = nullptr;
-
-	}
 	super::Release(); //release the memory of the inherited fields
 }
