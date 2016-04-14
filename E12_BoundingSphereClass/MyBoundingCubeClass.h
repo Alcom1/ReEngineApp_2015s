@@ -2,50 +2,51 @@
 Programmer: Alberto Bobadilla (labigm@gmail.com)
 Date: 2015/10
 ----------------------------------------------*/
-#ifndef __MYBOUNDINGSPHERECLASS_H_
-#define __MYBOUNDINGSPHERECLASS_H_
+#ifndef __MYBOUNDINGCubeCLASS_H_
+#define __MYBOUNDINGCubeCLASS_H_
 
 #include "RE\ReEng.h"
 
 
 //System Class
-class MyBoundingSphereClass
+class MyBoundingCubeClass
 {
-	float m_fRadius = 0.0f; //Radius of the Bounding Sphere
+	float m_fRadius = 0.0f; //Radius of the Bounding Cube
+	vector3 m_v3Size = vector3(0.0f);
 	matrix4 m_m4ToWorld = IDENTITY_M4; //Matrix that will take us from local to world coordinate
-	vector3 m_v3Center = vector3(0.0f); //Will store the center point of the Sphere Class
-	vector3 m_v3Min = vector3(0.0f); //Will store the minimum vector of the Sphere Class
-	vector3 m_v3Max = vector3(0.0f); //Will store the maximum vector of the Sphere Class
+	vector3 m_v3Center = vector3(0.0f); //Will store the center point of the Cube Class
+	vector3 m_v3Min = vector3(0.0f); //Will store the minimum vector of the Cube Class
+	vector3 m_v3Max = vector3(0.0f); //Will store the maximum vector of the Cube Class
 
 public:
 	/*
-	 MyBoundingSphereClass
+	 MyBoundingCubeClass
 	USAGE: Constructor
 	ARGUMENTS: ---
 	OUTPUT: class object
 	*/
-	MyBoundingSphereClass(std::vector<vector3> a_lVectorList);
+	MyBoundingCubeClass(std::vector<vector3> a_lVectorList);
 	/*
-	 MyBoundingSphereClass
+	 MyBoundingCubeClass
 	USAGE: Copy Constructor
 	ARGUMENTS: class object to copy
 	OUTPUT: class object instance
 	*/
-	MyBoundingSphereClass(MyBoundingSphereClass const& other);
+	MyBoundingCubeClass(MyBoundingCubeClass const& other);
 	/*
 	 operator=
 	USAGE: Copy Assignment Operator
 	ARGUMENTS: class object to copy
 	OUTPUT: ---
 	*/
-	MyBoundingSphereClass& operator=(MyBoundingSphereClass const& other);
+	MyBoundingCubeClass& operator=(MyBoundingCubeClass const& other);
 	/*
-	 ~MyBoundingSphereClass
+	 ~MyBoundingCubeClass
 	USAGE: Destructor
 	ARGUMENTS: ---
 	OUTPUT: ---
 	*/
-	~MyBoundingSphereClass(void);
+	~MyBoundingCubeClass(void);
 
 	/*
 	 Swap
@@ -54,11 +55,11 @@ public:
 		other -> object to swap content from
 	OUTPUT: ---
 	*/
-	void Swap(MyBoundingSphereClass& other);
+	void Swap(MyBoundingCubeClass& other);
 
 	/*
 	 SetToWorldMatrix
-	USAGE: Sets the Bounding Sphere into world coordinates
+	USAGE: Sets the Bounding Cube into world coordinates
 	ARGUMENTS:
 		matrix4 a_m4ToWorld -> Model to World matrix
 	OUTPUT: ---
@@ -67,29 +68,30 @@ public:
 	
 	/*
 	 GetCenter
-	USAGE: Gets the Bounding Sphere's center in world coordinates
+	USAGE: Gets the Bounding Cube's center in world coordinates
 	ARGUMENTS: ---
-	OUTPUT: vector3 -> Center's of the sphere in world coordinates
+	OUTPUT: vector3 -> Center's of the Cube in world coordinates
 	*/
 	vector3 GetCenterG(void);
 
 	/*
 	 GetRadius
-	USAGE: Gets the Bounding Sphere's radius
+	USAGE: Gets the Bounding Cube's radius
 	ARGUMENTS: ---
-	OUTPUT: float -> radius of the Bounding Sphere
+	OUTPUT: float -> radius of the Bounding Cube
 	*/
 	float GetRadius(void);
 
 	/*
 	 IsColliding
-	USAGE: Asks if there is a collision with another Bounding sphere Object
+	USAGE: Asks if there is a collision with another Bounding Cube Object
 	ARGUMENTS: 
-		MyBoundingSphereClass* const a_pOther -> Other object to check collision with
+		MyBoundingCubeClass* const a_pOther -> Other object to check collision with
 	OUTPUT: bool -> check of the collision
 	*/
-	bool IsColliding(MyBoundingSphereClass* const a_pOther);
+	bool IsColliding(MyBoundingCubeClass* const a_pOther);
 
+	vector3 GetSize(void);
 	matrix4 GetModelMatrix(void);
 	
 private:
@@ -109,4 +111,4 @@ private:
 	void Init(void);
 };
 
-#endif //__MYBOUNDINGSPHERECLASS_H__
+#endif //__MYBOUNDINGCubeCLASS_H__
