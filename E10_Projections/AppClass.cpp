@@ -3,6 +3,7 @@ void AppClass::InitWindow(String a_sWindowName)
 {
 	super::InitWindow("E10_Projections"); // Window Name
 }
+
 void AppClass::InitVariables(void)
 {
 	//Generate the Cone
