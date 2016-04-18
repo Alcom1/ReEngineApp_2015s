@@ -1,1 +1,4 @@
-Programmed by Joseph Horsmann and Veronica Lesnar
+Joseph Horsmann
+Veronica Lesnar
+Steven Siewert
+Alex Bronner
