@@ -70,6 +70,7 @@ public:
 	OUTPUT: ---
 	*/
 	virtual void ReadConfig(void) final {}
+
 	/*
 	USAGE: Writes the configuration of the application to a file
 	ARGUMENTS: ---
