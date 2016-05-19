@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModelViewer", "ModelViewer\ModelViewer_VS15.vcxproj", "{FB51C0AB-6E10-4DEB-9D27-A3C31251A36D}"
 EndProject
@@ -104,6 +104,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E17s_Bullet_DEMO", "E17s_Bullet\E17s_Bullet.vcxproj", "{BA58D015-7574-4760-BAD3-8CAC14CF7941}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ex01_As_DEMO", "Ex01_As_DEMO\Ex01_As_DEMO.vcxproj", "{AA18B089-83AC-4904-8600-CD68E61EDC26}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ex02_D", "Ex02_D\Ex02_D.vcxproj", "{9A22A075-8F3C-469C-BB18-363598841CD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -391,6 +393,12 @@ Global
 		{AA18B089-83AC-4904-8600-CD68E61EDC26}.Release|x64.ActiveCfg = Release|Win32
 		{AA18B089-83AC-4904-8600-CD68E61EDC26}.Release|x86.ActiveCfg = Release|Win32
 		{AA18B089-83AC-4904-8600-CD68E61EDC26}.Release|x86.Build.0 = Release|Win32
+		{9A22A075-8F3C-469C-BB18-363598841CD2}.Debug|x64.ActiveCfg = Debug|Win32
+		{9A22A075-8F3C-469C-BB18-363598841CD2}.Debug|x86.ActiveCfg = Debug|Win32
+		{9A22A075-8F3C-469C-BB18-363598841CD2}.Debug|x86.Build.0 = Debug|Win32
+		{9A22A075-8F3C-469C-BB18-363598841CD2}.Release|x64.ActiveCfg = Release|Win32
+		{9A22A075-8F3C-469C-BB18-363598841CD2}.Release|x86.ActiveCfg = Release|Win32
+		{9A22A075-8F3C-469C-BB18-363598841CD2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -442,5 +450,6 @@ Global
 		{42644F04-2817-4574-A85F-4361ED39F292} = {CC183CAA-9239-4F89-9287-5EEE05F78F04}
 		{BA58D015-7574-4760-BAD3-8CAC14CF7941} = {CC183CAA-9239-4F89-9287-5EEE05F78F04}
 		{AA18B089-83AC-4904-8600-CD68E61EDC26} = {DC3267C2-E823-438C-A903-BB3EF0FD30D6}
+		{9A22A075-8F3C-469C-BB18-363598841CD2} = {DC3267C2-E823-438C-A903-BB3EF0FD30D6}
 	EndGlobalSection
 EndGlobal
