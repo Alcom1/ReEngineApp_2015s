@@ -60,6 +60,8 @@ void AppClass::Display(void)
 
 	m_pMeshMngr->Render(); //renders the list of meshes in the system.
 
+	m_pMeshMngr->ClearRenderList();
+
 	m_pGLSystem->GLSwapBuffers(); //Swaps the OpenGL buffers
 }
 

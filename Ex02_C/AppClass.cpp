@@ -21,11 +21,11 @@ void AppClass::UpdateOrientation(void)
 {
 	static vector3 v3Orientation;
 	
-	m_m4Orientation = glm::rotate(IDENTITY_M4, v3Orientation.x, REAXISX);
-	m_m4Orientation = glm::rotate(m_m4Orientation, v3Orientation.y, REAXISY);
-	m_m4Orientation = glm::rotate(m_m4Orientation, v3Orientation.z, REAXISZ);
+	m_m4Orientation *= glm::rotate(IDENTITY_M4, 1.0f, REAXISX);
+	m_m4Orientation *= glm::rotate(IDENTITY_M4, 1.0f, REAXISY);
+	m_m4Orientation *= glm::rotate(IDENTITY_M4, 1.0f, REAXISZ);
 	
-	m_m4Orientation = m_m4Orientation * ToMatrix4(quaternion(vector3(glm::radians(1.0f), glm::radians(1.0f), glm::radians(1.0f))));
+	//m_m4Orientation = m_m4Orientation * ToMatrix4(quaternion(vector3(glm::radians(1.0f), glm::radians(1.0f), glm::radians(1.0f))));
 	v3Orientation += vector3(1.0f);
 }
 
