@@ -145,6 +145,36 @@ MyBOClass::MyBOClass(std::vector<vector3> a_lVectorList)
 	Init();
 
 	//Complete
+	uint count = a_lVectorList.size();
+
+	m_v3Max = m_v3Min = a_lVectorList[0];
+
+	for (uint i = 0; i < count; i++)
+	{
+		if (m_v3Min.x > a_lVectorList[i].x)
+			m_v3Min.x = a_lVectorList[i].x;
+		else if (m_v3Max.x < a_lVectorList[i].x)
+			m_v3Max.x = a_lVectorList[i].x;
+
+		if (m_v3Min.y > a_lVectorList[i].y)
+			m_v3Min.y = a_lVectorList[i].y;
+		else if (m_v3Max.y < a_lVectorList[i].y)
+			m_v3Max.y = a_lVectorList[i].y;
+
+		if (m_v3Min.z > a_lVectorList[i].z)
+			m_v3Min.z = a_lVectorList[i].z;
+		else if (m_v3Max.z < a_lVectorList[i].z)
+			m_v3Max.z = a_lVectorList[i].z;
+	}
+
+	m_v3Center = (m_v3Min + m_v3Max) / 2.0f;
+	m_v3HalfWidth = (m_v3Min - m_v3Max) / 2.0f;
+	m_fRadius = glm::length(m_v3HalfWidth);
+
+	m_v3MaxG = m_v3Max;
+	m_v3MinG = m_v3Min;
+	m_v3CenterG = m_v3Center;
+	m_v3HalfWidthG = m_v3HalfWidth;
 }
 void MyBOClass::SetModelMatrix(matrix4 a_m4ToWorld)
 {
@@ -154,4 +184,33 @@ void MyBOClass::SetModelMatrix(matrix4 a_m4ToWorld)
 		return;
 
 	m_m4ToWorld = a_m4ToWorld;
+	m_v3CenterG = vector3(m_m4ToWorld * vector4(m_v3Center, 1.0f));
+	m_v3MaxG = vector3(m_m4ToWorld * vector4(m_v3Max, 1.0f));
+	m_v3MinG = vector3(m_m4ToWorld * vector4(m_v3Min, 1.0f));
+
+	for (int i = 0; i < 8; i++)
+	{
+		vector3 temp = vector3(
+			i & 1 ? m_v3Min.x : m_v3Max.x,
+			i & 2 ? m_v3Min.y : m_v3Max.y,
+			i & 4 ? m_v3Min.z : m_v3Max.z);
+		temp = vector3(m_m4ToWorld * vector4(temp, 1.0f));
+
+		if (m_v3MinG.x > temp.x) //If min is larger than current
+			m_v3MinG.x = temp.x;
+		else if (m_v3MaxG.x < temp.x)//if max is smaller than current
+			m_v3MaxG.x = temp.x;
+
+		if (m_v3MinG.y > temp.y) //If min is larger than current
+			m_v3MinG.y = temp.y;
+		else if (m_v3MaxG.y < temp.y)//if max is smaller than current
+			m_v3MaxG.y = temp.y;
+
+		if (m_v3MinG.z > temp.z) //If min is larger than current
+			m_v3MinG.z = temp.z;
+		else if (m_v3MaxG.z < temp.z)//if max is smaller than current
+			m_v3MaxG.z = temp.z;
+	}
+
+	m_v3HalfWidthG = (m_v3MaxG - m_v3MinG) / 2.0f;
 }
